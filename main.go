@@ -1,32 +1,30 @@
 package gocrypto
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
-	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"time"
-	"{{ .AppRepository }}/commons/log"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
-func SetPassword(password string) string {
+func EncryptPassword(password string) (string, error) {
 	var err error
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		log.Error.Println(err)
-	}
 
-	return string(hash)
+	if err != nil {
+		return "", err
+	} else {
+		return string(hash), err
+	}
 }
 
-func CheckPassword(password string, hashedPassword string) bool {
+func CheckPassword(password string, hashedPassword string) (bool, error) {
 	var err error
 
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 
-	return err == nil
+	return err == nil, err
 }
 
 func RandString(size int) string {
@@ -40,11 +38,4 @@ func RandString(size int) string {
 	}
 
 	return string(b)
-}
-
-func EncryptText(clearText string, key string) string {
-	mac := hmac.New(sha256.New, []byte(key))
-	mac.Write([]byte(clearText))
-
-	return hex.EncodeToString(mac.Sum(nil))
 }
