@@ -1,4 +1,4 @@
-package gocrypto
+package gocrypt
 
 import (
 	"math/rand"
