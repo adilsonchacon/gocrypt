@@ -1,2 +1,2 @@
 # gocrypt
-Golang package for encrypt/decrypt data with common algorithms
+Golang package for encrypt password, check password and generate randomic strings
